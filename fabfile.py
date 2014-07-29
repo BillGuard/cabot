@@ -127,6 +127,7 @@ def deploy(deploy_version=None):
         local_dir='./',
         exclude=['.git', 'backups', 'venv',
                  'static/CACHE', '.vagrant', '*.pyc', 'dev.db'],
+        extra_opts="--copy-unsafe-links"
     )
     with cd(deploy_path):
         _ensure_dirs()
