@@ -16,7 +16,7 @@ def get_data(target_pattern):
         params={
             'target': target_pattern,
             'format': 'json',
-            'from': '-2day'
+            'from': '-1day'
         }
     )
     resp.raise_for_status()
