@@ -1,7 +1,7 @@
 from django.template import RequestContext, loader
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse_lazy
 from django.conf import settings
 from models import (
@@ -663,9 +663,12 @@ class StatusCheckReportView(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             return {'checks': form.get_report(), 'service': form.cleaned_data['service']}
 
-class StatusCheckReportJsonView(LoginRequiredMixin, View):
+class StatusCheckReportJsonView(View):
     
     def get(self, request, *args, **kwargs):
+        if request.GET.get('secret') != settings.HACKY_API_KEY:
+            return HttpResponseForbidden()
+
         form = StatusCheckReportForm(self.request.GET)
         if form.is_valid():
             checks = form.get_report()
