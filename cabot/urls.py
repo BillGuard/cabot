@@ -7,7 +7,7 @@ from cabot.cabotapp.views import (
     ICMPCheckCreateView, ICMPCheckUpdateView,
     JenkinsCheckCreateView, JenkinsCheckUpdateView,
     StatusCheckDeleteView, StatusCheckListView, StatusCheckDetailView,
-    StatusCheckResultDetailView, StatusCheckReportView)
+    StatusCheckResultDetailView, StatusCheckReportView, StatusCheckReportJsonView)
 
 from cabot.cabotapp.views import (InstanceListView, InstanceDetailView,
                             InstanceUpdateView, InstanceCreateView, InstanceDeleteView,
@@ -76,6 +76,8 @@ urlpatterns = patterns('',
                            view=StatusCheckDetailView.as_view(), name='check'),
                        url(r'^checks/report/$',
                            view=StatusCheckReportView.as_view(), name='checks-report'),
+                       url(r'^checks/report_json/$',
+                           view=StatusCheckReportJsonView.as_view(), name='checks-report-json'),
 
 
                        url(r'^icmpcheck/create/', view=ICMPCheckCreateView.as_view(),

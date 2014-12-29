@@ -11,7 +11,7 @@ from tasks import run_status_check as _run_status_check
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import (
-    DetailView, CreateView, UpdateView, ListView, DeleteView, TemplateView)
+    DetailView, CreateView, UpdateView, ListView, DeleteView, TemplateView, View)
 from django import forms
 from .graphite import get_data, get_matching_metrics
 from .alert import telephone_alert_twiml_callback
@@ -20,6 +20,9 @@ from django.utils import timezone
 from django.utils.timezone import utc
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
+from django.core import serializers
+from django.core.serializers import json as django_json
+from django.db import models
 
 from itertools import groupby, dropwhile, izip_longest
 import requests
@@ -659,6 +662,30 @@ class StatusCheckReportView(LoginRequiredMixin, TemplateView):
         form = StatusCheckReportForm(self.request.GET)
         if form.is_valid():
             return {'checks': form.get_report(), 'service': form.cleaned_data['service']}
+
+class StatusCheckReportJsonView(LoginRequiredMixin, View):
+    
+    def get(self, request, *args, **kwargs):
+        form = StatusCheckReportForm(self.request.GET)
+        if form.is_valid():
+            checks = form.get_report()
+            service = form.cleaned_data['service']
+            
+            content = {'checks': []}
+            for check in checks:
+                check_raw = {
+                    'name': check.name,
+                    'success_rate': check.success_rate,
+                    'problems': [{
+                            'start_time': start_time,
+                            'end_time': end_time,
+                            'duration': duration.total_seconds()
+                        } for start_time, end_time, duration in check.problems]
+                }
+                content['checks'].append(check_raw)
+
+            j = json.dumps(content, cls=django_json.DjangoJSONEncoder)
+            return HttpResponse(j, content_type='application/json')
 
 
 # Misc JSON api and other stuff
