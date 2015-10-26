@@ -137,28 +137,28 @@ server {
   }
 
   # Uncomment line below to force https
-  #return 301 https://\$host\$request_uri;
+  return 301 https://\$host\$request_uri;
 }
 
 # Proxy secure traffic to cabot
-# server {
-#   listen 443 ssl;
-#   ssl_certificate /usr/local/nginx/testing.crt;
-#   ssl_certificate_key /usr/local/nginx/testing.pem;
+server {
+  listen 443 ssl;
+  ssl_certificate /usr/local/nginx/testing.crt;
+  ssl_certificate_key /usr/local/nginx/testing.key;
 
-#   location / {
-#     proxy_pass http://localhost:5000/;
-#     proxy_set_header Host \$http_host;
-#     proxy_set_header X-Real-IP \$remote_addr;
-#     proxy_set_header X-Forwarded-Proto https;
-#     proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-#     proxy_redirect http:// https://;
-#   }
+  location / {
+    proxy_pass http://localhost:5000/;
+    proxy_set_header Host \$http_host;
+    proxy_set_header X-Real-IP \$remote_addr;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    proxy_redirect http:// https://;
+  }
 
-#   location /static/ {
-#     alias $DEPLOY_PATH/static/;
-#   }
-# }
+  location /static/ {
+    alias /home/ubuntu/cabot/static/;
+  }
+}
 EOF
 
 # Enable cabot configuration and restart nginx
