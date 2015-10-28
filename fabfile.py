@@ -152,7 +152,12 @@ def backup():
     """
     backup_file = 'outfile.sql.gz'
     with cd(BACKUP_DIR):
-        run('PGPASSWORD=cabot pg_dump -U cabot index | gzip > {}'.format(backup_file))
+        run('PGPASSWORD={passwd} pg_dump -h localhost -U {user} {database} | gzip > {backup}'.format(
+            passwd=PG_PASSWORD,
+            user=PG_USERNAME,
+            database=PG_DATABASE,
+            backup=backup_file
+            ))
         get(backup_file, 'backups/%(basename)s')
 
 
