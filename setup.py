@@ -45,7 +45,7 @@ setup(
         'psycopg2==2.5.1',
         'pytz==2013.9',
         'redis==2.9.0',
-        'requests==0.14.2',
+        'requests==2.20.0',
         'six==1.5.1',
         'twilio==3.4.1',
         'wsgiref==0.1.2',
