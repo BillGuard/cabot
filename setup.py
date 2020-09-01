@@ -12,7 +12,7 @@ setup(
     url='http://cabotapp.com',
     license='MIT',
     install_requires=[
-        'Django==1.6.5',
+        'Django==1.11.29',
         'Markdown==2.5',
         'PyJWT==0.1.2',
         'South==1.0',
