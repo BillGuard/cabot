@@ -37,7 +37,7 @@ setup(
         'gunicorn==18.0',
         'gevent==1.0.1',
         'hiredis==0.1.1',
-        'httplib2==0.7.7',
+        'httplib2==0.18.0',
         'icalendar==3.2',
         'kombu==3.0.8',
         'mock==1.0.1',
