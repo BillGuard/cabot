@@ -33,7 +33,7 @@ setup(
         'django-polymorphic==0.5.6',
         'django-redis==1.4.5',
         'django-smtp-ssl==1.0',
-        'djangorestframework==2.4.2',
+        'djangorestframework==3.11.2',
         'gunicorn==18.0',
         'gevent==1.0.1',
         'hiredis==0.1.1',
